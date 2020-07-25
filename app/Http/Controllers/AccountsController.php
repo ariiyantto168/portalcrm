@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Accounts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class AccountsController extends Controller
 {

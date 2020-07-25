@@ -140,16 +140,6 @@
 
 
 
-      <div class="form-group">
-        <label class="col-sm-2 control-label">Status</label>
-        <div class="col-sm-5">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" name="active" checked> Active
-            </label>
-          </div>
-        </div>
-      </div>
 
       <div class="form-group">
         <label class="col-sm-2 control-label"></label>

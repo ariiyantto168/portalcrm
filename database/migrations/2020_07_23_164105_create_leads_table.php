@@ -28,7 +28,7 @@ class CreateLeadsTable extends Migration
             $table->string('amount');
             $table->text('alamat');
             $table->text('description');
-            $table->boolean('active');
+            $table->enum('status',['p','a','r']); //pending , approved, rejected
             $table->softDeletes();
             $table->timestamps();
         });

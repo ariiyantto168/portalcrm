@@ -17,7 +17,6 @@ class UsersTableSeeder extends Seeder
         $roles = ['a','s','p'];
        foreach ($roles as $role) {
          $save_user = new User;
-         $save_user->idusers = Uuid::uuid4();
          if ($role == 'a') {
            $save_user->name = 'Admin';
            $save_user->email ='root@root.com';

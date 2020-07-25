@@ -44,7 +44,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>S</b>CLOUD</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SISTEM</b>CLOUD</span>
+      <span class="logo-lg"><b>PORTAL</b>CRM</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -55,6 +55,10 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+
+
+
+
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/img/avatar5.png" class="user-image" alt="User Image">
@@ -121,6 +125,8 @@
                       <li id="submenu_industries"><a href="{{url('industries')}}"><i class="fa fa-hashtag"></i> Industry</a></li>
                       <li id="submenu_sources"><a href="{{url('sources')}}"><i class="fa fa-university"></i> Sources</a></li>
                     </ul>
+              <li id="menu_approvals"><a href="{{url('/approvals')}}"><i class="fa fa-info-circle"></i><span> Approvals</span></a></li>
+           
                   </li>
               @endif
 

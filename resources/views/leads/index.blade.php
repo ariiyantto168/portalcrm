@@ -26,7 +26,6 @@
           <th>Sources</th>
           <th>Status Leads </th>
           <th> Industry </th>
-          <th>Status</th>
           <th></th>
         </tr>
         </thead>
@@ -38,15 +37,6 @@
           <td>{{$lead->sources->name}}</td>
           <td>{{$lead->statusleads}}</td>
           <td>{{$lead->industries->name}}</td>
-          <td>
-            <center>
-             @if($lead->active)
-               <span class="label label-success">Active</span>
-             @else
-               <span class="label label-danger">Inactive</span>
-             @endif
-           </center>
-          </td>
           <td>
             <center>
               <a href="{{url('/leads/update/'.$lead->idleads)}}" ><i class="fa fa-pencil-square-o"></i></a>

@@ -30,7 +30,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>SISTEM CLOUD</b></a>
+    <a href="../../index2.html"><b>PORTAL CRM</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">

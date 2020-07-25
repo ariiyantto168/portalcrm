@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\Leads;
+use App\Models\Approvals;
 use App\Models\Sources;
 use App\Models\Industries;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
+
+
+
 
 class LeadsController extends Controller
 {
@@ -71,8 +76,11 @@ class LeadsController extends Controller
         $saveLeads->idsources = $request->idsources;
         $saveLeads->idindustries = $request->idindustries;
         $saveLeads->fill($request->all());
-        $saveLeads->active = $active;
+        $saveLeads->status = 'p';
         $saveLeads->save();
+
+
+        $this->create_approvals($saveLeads->idleads,$saveLeads->status);
         return redirect('leads')->with('status_success','Created leads');
     }
 
@@ -115,8 +123,18 @@ class LeadsController extends Controller
         $saveLeads->idsources = $request->idsources;
         $saveLeads->idindustries = $request->idindustries;
         $saveLeads->fill($request->all());
-        $saveLeads->active = $active;
         $saveLeads->save();
         return redirect('leads')->with('status_success','Updated leads');
+    }
+
+    protected  function create_approvals($idleads,$status)
+    {
+      $save_approvals = new Approvals;
+    //   $save_approvals->idapprovals = Str::uuid();
+      $save_approvals->idleads = $idleads;
+      $save_approvals->status = $status;
+      $save_approvals->seen  = FALSE;
+      $save_approvals->idusers = $idleads;
+      $save_approvals->save();
     }
 }

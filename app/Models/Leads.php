@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class Leads extends Model
 {
@@ -18,9 +21,6 @@ class Leads extends Model
     'gelar','firstname','lastname','account','tittle','website','statusleads','tipemoney','amount','alamat','description',
   ];
 
-  protected $casts = [
-       'active' => 'boolean'
-   ];
 
    public function sources()
    {
@@ -31,6 +31,13 @@ class Leads extends Model
    {
      return $this->belongsTo('App\Models\Industries', 'idindustries');
    }
+
+   public function users()
+  {
+    return $this->belongsTo('App\Models\User','idusers');
+  }
+
+
 
 
 }

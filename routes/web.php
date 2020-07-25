@@ -65,4 +65,10 @@ Route::get('/opps', 'OppsController@index')->name('index');
 Route::get('/opps/create-new', 'OppsController@create_page')->name('create_page');
 Route::post('/opps/create-new', 'OppsController@create_save')->name('create_page');
 
+//approvals
+Route::get('approvals/', 'ApprovalsController@index');
+Route::get('approvals/show/{approval}', 'ApprovalsController@show');
+Route::post('approvals/update/{approval}', 'ApprovalsController@update_approvals');
+Route::get('/approvals/update/{approve}', 'ApprovalsController@approve')->name('update');
+
 Route::get('/home', 'HomeController@index')->name('home');
