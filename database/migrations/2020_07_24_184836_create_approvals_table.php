@@ -19,6 +19,8 @@ class CreateApprovalsTable extends Migration
           $table->enum('status',['p','a','r']); //pending , approved, rejected
           $table->boolean('seen');
           $table->string('idusers');
+          $table->enum('level',['a','s']); 
+          $table->integer('user_approvals');
           $table->timestamps();
           $table->SoftDeletes();
         });

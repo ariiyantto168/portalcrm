@@ -37,6 +37,11 @@ class Leads extends Model
     return $this->belongsTo('App\Models\User','idusers');
   }
 
+  public function approvals()
+  {
+    return $this->hasMany('App\Models\Approvals','idleads');
+  }
+
 
 
 

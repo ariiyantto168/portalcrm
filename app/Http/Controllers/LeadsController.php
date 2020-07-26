@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Models\User;
 use App\Models\Leads;
 use App\Models\Approvals;
 use App\Models\Sources;
@@ -66,7 +67,7 @@ class LeadsController extends Controller
         //     'name' => 'required',
         //     'active' => ''
         // ]);
-
+            // return Auth::user()->idusers;
         $active = FALSE;
         if($request->has('active')) {
             $active = TRUE;
@@ -75,24 +76,42 @@ class LeadsController extends Controller
         $saveLeads = new Leads;
         $saveLeads->idsources = $request->idsources;
         $saveLeads->idindustries = $request->idindustries;
-        $saveLeads->fill($request->all());
+        $saveLeads->gelar = $request->gelar;
+        $saveLeads->firstname = $request->firstname;
+        $saveLeads->lastname = $request->lastname;
+        $saveLeads->account = $request->account;
+        $saveLeads->account = $request->account;
+        $saveLeads->tittle = $request->tittle;
+        $saveLeads->website = $request->website;
+        $saveLeads->statusleads = $request->statusleads;
+        $saveLeads->tipemoney = $request->tipemoney;
+        $saveLeads->amount = $request->amount;
+        $saveLeads->alamat = $request->alamat;
+        $saveLeads->description = $request->description;
         $saveLeads->status = 'p';
         $saveLeads->save();
 
-
-        $this->create_approvals($saveLeads->idleads,$saveLeads->status);
+        
+        $this->create_approvals($saveLeads->idleads);
         return redirect('leads')->with('status_success','Created leads');
     }
 
     public function update_page(Leads $leads)
     {
         $inds = Industries::all();
-
+        $lead = Leads::with([
+                        'approvals' => function($app){
+                            $app->with(['approve_by']);
+                        }
+                        ])->where('idleads',$leads->idleads)->first();
+        // return $lead;
         $contents = [
-            'leads' => Leads::find($leads->idleads),
+            'leads' => $lead,
             'sources' => Sources::all(),
             'industries' => $inds,
+            // 'approvals' => $apps,
         ];
+            // return $contents;
         // dd($contents);
         $pagecontent = view('leads.update',$contents);
 
@@ -109,11 +128,7 @@ class LeadsController extends Controller
 
     public function update_save(Request $request, Leads $leads)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'active' => ''
-        // ]);
-
+    
         $active = FALSE;
         if($request->has('active')) {
             $active = TRUE;
@@ -122,19 +137,37 @@ class LeadsController extends Controller
         $saveLeads = Leads::find($leads->idleads);
         $saveLeads->idsources = $request->idsources;
         $saveLeads->idindustries = $request->idindustries;
-        $saveLeads->fill($request->all());
+        $saveLeads->gelar = $request->gelar;
+        $saveLeads->firstname = $request->firstname;
+        $saveLeads->lastname = $request->lastname;
+        $saveLeads->account = $request->account;
+        $saveLeads->account = $request->account;
+        $saveLeads->tittle = $request->tittle;
+        $saveLeads->website = $request->website;
+        $saveLeads->statusleads = $request->statusleads;
+        $saveLeads->tipemoney = $request->tipemoney;
+        $saveLeads->amount = $request->amount;
+        $saveLeads->alamat = $request->alamat;
+        $saveLeads->description = $request->description;
         $saveLeads->save();
         return redirect('leads')->with('status_success','Updated leads');
     }
 
-    protected  function create_approvals($idleads,$status)
+    protected  function create_approvals($idleads)
     {
-      $save_approvals = new Approvals;
-    //   $save_approvals->idapprovals = Str::uuid();
-      $save_approvals->idleads = $idleads;
-      $save_approvals->status = $status;
-      $save_approvals->seen  = FALSE;
-      $save_approvals->idusers = $idleads;
-      $save_approvals->save();
+        $loops = ['a','s'];
+        foreach($loops as $loop) {
+            $user = User::where('role',$loop)->first();
+            if (!is_null($user)) {
+                $save_approvals = new Approvals;
+                $save_approvals->idleads = $idleads;
+                $save_approvals->status = 'p';
+                $save_approvals->level = $loop;
+                $save_approvals->user_approvals = $user->idusers;
+                $save_approvals->seen  = FALSE;
+                $save_approvals->idusers = $idleads;
+                $save_approvals->save();
+            }
+        }
     }
 }

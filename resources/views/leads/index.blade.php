@@ -26,6 +26,7 @@
           <th>Sources</th>
           <th>Status Leads </th>
           <th> Industry </th>
+          <th> Status</td>
           <th></th>
         </tr>
         </thead>
@@ -37,6 +38,15 @@
           <td>{{$lead->sources->name}}</td>
           <td>{{$lead->statusleads}}</td>
           <td>{{$lead->industries->name}}</td>
+          <td>
+            @if ($lead->status == 'a')
+              <span class="label label-success">Approved</span>
+            @elseif ($lead->status == 'r')
+              <span class="label label-danger">Rejected</span>
+            @elseif ($lead->status == 'p')
+              <span class="label label-warning">Pending</span>
+            @endif
+          </td>
           <td>
             <center>
               <a href="{{url('/leads/update/'.$lead->idleads)}}" ><i class="fa fa-pencil-square-o"></i></a>

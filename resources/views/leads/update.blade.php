@@ -16,7 +16,7 @@
   <!-- Default box -->
   <div class="box">
     <div class="box-header with-border">
-      <h3 class="box-title">Create New</h3>
+      <h3 class="box-title">Update</h3>
     </div>
     <div class="box-body">
     {{Form::open(array('url' => 'leads/update/'.$leads->idleads, 'class' => 'form-horizontal'))}}
@@ -125,7 +125,7 @@
           <label class="">Alamat</label>
         </div>
         <div class="col-sm-5">
-          <textarea name="alamat" rows="3"  class="form-control" required>{{$leads->firstname}}</textarea>
+          <textarea name="alamat" rows="3"  class="form-control" required>{{$leads->alamat}}</textarea>
         </div>
       </div>
 
@@ -134,7 +134,20 @@
           <label class="">Description</label>
         </div>
         <div class="col-sm-5">
-          <textarea name="description" rows="3"  class="form-control" required>{{$leads->firstname}}</textarea>
+          <textarea name="description" rows="3"  class="form-control" required>{{$leads->description}}</textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Status</label>
+        <div class="col-sm-5">
+          @if ($leads->status == 'a')
+            <span class="label label-success">Approved</span>
+          @elseif ($leads->status == 'r')
+            <span class="label label-danger">Rejected</span>
+          @elseif ($leads->status == 'p')
+            <span class="label label-warning">Pending</span>
+          @endif</td>
         </div>
       </div>
 
@@ -149,6 +162,59 @@
         </div>
       </div>
       {{ Form::close() }}
+    </div>
+    <!-- /.box-body -->
+  </div>
+  <!-- /.box -->
+
+</section>
+
+<section class="content">
+
+  <!-- Default box -->
+  <div class="box">
+    <div class="box-header with-border">
+      <h3 class="box-title">Approvals</h3>
+    </div>
+    <div class="box-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="example3">
+        <thead>
+                <tr>
+                  <th>Approve By</th>
+                  <th>Level</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+          </thead>
+          <tbody>
+            @foreach ($leads->approvals as $app)
+            <tr>
+              <td>
+                {{$app->approve_by->name}}
+              </td>
+              <td>
+                @if ($app->level == 'a')
+                    Admin
+
+        @else
+                  Sales
+                @endif
+              </td>
+              <td>
+                @if ($app->status == 'a')
+                <span class="label label-success">Approved</span>
+              @elseif ($app->status == 'r')
+                <span class="label label-danger">Rejected</span>
+              @elseif ($app->status == 'p')
+                <span class="label label-warning">Pending</span>
+              @endif</td>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+      </table>
+      </div>
     </div>
     <!-- /.box-body -->
   </div>

@@ -40,6 +40,11 @@ class Approvals extends Model
      return $this->belongsTo('App\Models\User', 'idusers');
   }
 
+  public function approve_by()
+  {
+    return $this->belongsTo('App\Models\User','user_approvals','idusers');
+  }
+
 
 
 }

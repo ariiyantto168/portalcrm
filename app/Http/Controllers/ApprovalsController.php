@@ -7,7 +7,7 @@ use App\Models\Approvals;
 use App\Models\Leads;
 use App\Models\Sources;
 use App\Models\Industries;
-
+use Auth;
 class ApprovalsController extends Controller
 {
     public function __construct()
@@ -30,13 +30,14 @@ class ApprovalsController extends Controller
           ->join('industries','leads.idindustries','=','industries.idindustries')
           ->select(
             'approvals.*',
-            'leads.description as account',
+            'leads.account as account',
             'sources.name as name',
             'industries.name as name'
             )
-          ->orderBy('.idapprovals');
+          ->orderBy('approvals.idapprovals')
+          ->where('approvals.user_approvals',Auth::user()->idusers);
 
-        //   return $approvals;
+          // return $approvals;
 
           if (in_array($request->status, ['p','a','r'])) {
             $approvals->where('approvals.status',$request->status);
@@ -45,12 +46,13 @@ class ApprovalsController extends Controller
           if (strlen($request->account) > 0) {
             $approvals->where('leads.idleads', $request->account);
           }
-      
+          # 
+          // return $approvals->get();
           $data_approvals = $approvals->get();
-        //   return $data_approvals;
+          # // return $data_approvals;
 
         $contents = [
-            'accounts' => Leads::all(),
+            'account' => Leads::all(),
             'sources' => Sources::where('active',TRUE)->get(),
             'approvals' => $data_approvals,
           ];
@@ -68,13 +70,49 @@ class ApprovalsController extends Controller
           return view('masterpage', $pagemain);
     }
 
-    public function show(Approvals $approval, Leads $leads)
-  {
+  //   public function show(Approvals $approval, Leads $leads)
+  // {
 
-        $contents = [
-            'leads' => Leads::find($leads->idleads),
-            'approvals' => Leads::find($approval->idapprovals)
-        ];
+  //       $contents = [
+  //           'leads' => Leads::find($leads->idleads),
+  //           'approvals' => Leads::find($approval->idapprovals)
+  //       ];
+
+  //   $pagecontent =  view('approvals.show', $contents);
+
+  //   //masterpage
+  //   $pagemain = array(
+  //     'title' => 'Approvals',
+  //     'menu' => 'approvals',
+  //     'submenu' => '',
+  //     'pagecontent' => $pagecontent,
+  //   );
+
+  //   return view('masterpage', $pagemain);
+  // }
+
+  public function show(Approvals $approval, Leads $leads)
+  {
+    // $approvals = Approvals::with(['leads'])->get()
+    //             ->where('idapprovals', $approval->idapprovals)
+    //             ->first();
+
+    $approvals = Approvals::with([
+      'leads' => function($led){
+        $led->with([
+          'sources',
+          'industries',
+        ]);
+      }
+    ])
+    ->where('idapprovals', $approval->idapprovals)
+    ->first();
+                  // return $approvals;
+    $contents = [
+      'approvals' => $approvals,
+    ];
+
+    // return $contents;
 
     $pagecontent =  view('approvals.show', $contents);
 
@@ -89,7 +127,46 @@ class ApprovalsController extends Controller
     return view('masterpage', $pagemain);
   }
 
-  public function approve(Approvals $approvals) {
+  public function update_approvals(Request $request, Approvals $approval )
+  {
+    $save_approve = Approvals::find($approval->idapprovals);
+    $save_approve->status  = $request->status;
+    $save_approve->seen = 1;
+    // return $save_approve;
+     $save_approve->save();
+
+     $this->update_leads($save_approve);
+     return redirect('approvals')->with('success','Updated status equipment');
+  }
+
+  protected function update_leads($save_approve)
+  {
+    $get_app = Approvals::where('idleads',$save_approve->idleads)->get();
+    
+    $pending = $approved = $rejected = FALSE;
+    foreach ($get_app as $app) {
+      if ($app->status == 'r') {
+        $rejected = TRUE;
+      }elseif($app->status == 'a'){
+        $approved = TRUE;
+      }elseif($app->status == 'p'){
+        $pending = TRUE;
+      }
+    }
+
+    $status = 'p';
+    if ($rejected) {
+      $status = 'r'; 
+    }elseif($approved && !$pending){
+      $status = 'a';
+    }elseif($pending){
+      $status = 'p';
+    }
+
+    // return $get_app;
+    $save_eqdet = Leads::find($save_approve->idleads);
+    $save_eqdet->status = $status;
+    $save_eqdet->save();
 
   }
 

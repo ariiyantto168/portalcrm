@@ -130,6 +130,19 @@
                   </li>
               @endif
 
+              @if (Auth::user()->role == "s")
+                  <li class="treeview" id="menu_master">
+                    <a href="#">
+                      <i class="fa fa-database"></i> <span>Master</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span> 
+                    </a>
+              <li id="menu_approvals"><a href="{{url('/approvals')}}"><i class="fa fa-info-circle"></i><span> Approvals</span></a></li>
+           
+                  </li>
+              @endif
+
               {{-- untuk partner --}}
               @if (Auth::user()->role == "p")
                   <li class="treeview" id="menu_master">

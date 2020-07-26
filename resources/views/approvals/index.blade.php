@@ -20,12 +20,12 @@
           <div class="row">
             <div class="col-sm-2">
               <small>Cabang</small>
-              <select class="form-control" name="cabang">
+              <select class="form-control" name="account">
                 <option value=""> -- All account --</option>
-                @foreach ($accounts as $account)
-                  <option value="{{$account->idleads}}" @if (Request::get('account') == $account->idleads)
+                @foreach ($account as $acc)
+                  <option value="{{$acc->idleads}}" @if (Request::get('account') == $acc->idleads)
                     selected
-                  @endif>{{$account->account}}</option>
+                  @endif>{{$acc->account}}</option>
                 @endforeach
               </select>
             </div>
@@ -48,44 +48,44 @@
         {{Form::close()}}
       </div>
       <div class="box-body">
-        <div class="table-responsive">
           <div class="table-responsive">
             <table class="table table-bordered table-striped" id="example3">
               <thead>
                 <tr>
                   <th>No</th>
                   <th>Accounts</th>
+                  <th></th>
                   <th>Status</th>
-                  <th> Approve </th>
-                 <th>Rejected </th>
-                 <th> Pending </th>
-
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
               @foreach ($approvals as $index => $app)
-                  <tr>
-                    <td>{{$index+1}}</td>
-                    <td>{{$app->name}}</td>
-                    <td>
-                      @if ($app->status == 'a')
-                        <span class="label label-success">Approved</span>
-                      @elseif ($app->status == 'r')
-                        <span class="label label-danger">Rejected</span>
-                      @elseif ($app->status == 'p')
-                        <span class="label label-warning">Pending</span>
-                      @endif
-                    </td>
-                    <td>
-                    <button type="button" class="btn btn-danger" href="{{url('/approvals/update/'.$app->idapprovals)}}">Approval</button>
-                    </td>
-                    <td>
-                    <button type="button" class="btn btn-danger">Rejected</button>
-                    </td>
-                    <td>
-                    <button type="button" class="btn btn-danger">Pending</button>
-                    </td>
-                   </tr>
+             
+                  
+              <tr>
+                <td>{{$index+1}}</td>
+                <td>{{$app->account}}</td>
+                <td>
+                  @if($app->level == 'a')
+                    Admin
+                  @else
+                   Sales
+                  @endif
+                </td>
+                <td>
+                  @if ($app->status == 'a')
+                    <span class="label label-success">Approved</span>
+                  @elseif ($app->status == 'r')
+                    <span class="label label-danger">Rejected</span>
+                  @elseif ($app->status == 'p')
+                    <span class="label label-warning">Pending</span>
+                  @endif
+                </td>
+                <td><a class="" href="{{url('approvals/show/'.$app->idapprovals)}}"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a></td>
+               </tr>
+
                 @endforeach
               </tbody>
             </table>
