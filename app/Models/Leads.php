@@ -42,6 +42,11 @@ class Leads extends Model
     return $this->hasMany('App\Models\Approvals','idleads');
   }
 
+  public function contacts()
+  {
+    return $this->hasMany('App\Models\Contacts','idleads');
+  }
+
 
 
 

@@ -15,6 +15,7 @@ class CretaeContactsTable extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->increments('idcontacts');
+            $table->integer('idleads');
             $table->string('gelar')->nullable();
             $table->string('firstname');
             $table->string('lastname');

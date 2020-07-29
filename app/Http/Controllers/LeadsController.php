@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use PDF;
 use App\Models\User;
 use App\Models\Leads;
 use App\Models\Approvals;
@@ -10,9 +11,7 @@ use App\Models\Sources;
 use App\Models\Industries;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
-
-
-
+use App\Models\Contacts;
 
 class LeadsController extends Controller
 {
@@ -169,5 +168,92 @@ class LeadsController extends Controller
                 $save_approvals->save();
             }
         }
+    }
+
+    public function add_contacts(Leads $leads)
+    {
+        $leads = Leads::with([
+                                'industries',
+                                'sources',
+                                'contacts'
+                            ])->where('idleads',$leads->idleads)
+                              ->first();
+        // return $leads;
+        $contents = [
+            'leads' => $leads
+        ];
+            // return $contents;
+        // dd($contents);
+        $pagecontent = view('leads.add-contacts',$contents);
+
+        //masterpage
+        $pagemain = array(
+            'title' => 'updated leads',
+            'menu' => 'leads',
+            'submenu' => '',
+            'pagecontent' => $pagecontent,
+        );
+
+        return view('masterpage', $pagemain);
+    }
+
+    public function save_add_contacts(Leads $leads,Request $request)
+    {
+        // return $request->all();
+        $count = count($request->gelar);
+        for ($i=0; $i < $count ; $i++) { 
+            $save_contact = new Contacts;
+            $save_contact->idleads = $leads->idleads;
+            $save_contact->gelar = $request->gelar[$i];
+            $save_contact->account = $request->account[$i];
+            $save_contact->firstname = $request->firstname[$i];
+            $save_contact->lastname = $request->lastname[$i];
+            $save_contact->alamat = $request->alamat[$i];
+            $save_contact->description = $request->description[$i];
+            $save_contact->save();
+        }
+        return redirect('leads/add-contacts/'.$leads->idleads)->with('status_success','Created Contacts');
+      
+    }
+
+    public function save_update_contacts(Leads $leads, Request $request)
+    {
+        // return $request->all();
+        $count = count($request->idcontacts);
+        for ($i=0; $i < $count ; $i++) { 
+            if ($request->idcontacts[$i] == 'new') {
+                $save_contact = new Contacts;
+                $save_contact->idleads = $leads->idleads;
+            }else{
+                $save_contact = Contacts::find($request->idcontacts[$i]);
+            }
+            $save_contact->gelar = $request->gelar[$i];
+            $save_contact->account = $request->account[$i];
+            $save_contact->firstname = $request->firstname[$i];
+            $save_contact->lastname = $request->lastname[$i];
+            $save_contact->alamat = $request->alamat[$i];
+            $save_contact->description = $request->description[$i];
+            $save_contact->save();
+        }
+
+        return redirect('leads/add-contacts/'.$leads->idleads)->with('status_success','Updated Contacts');
+    }
+
+    public function print_pdf(Leads $leads)
+    {
+        // return 'oke';
+        $leads = Leads::with([
+            'industries',
+            'sources',
+            'contacts'
+        ])->where('idleads',$leads->idleads)
+          ->first();
+                    // return $leads;
+          $view = view('leads.pdf-print')->with('leads',$leads);
+          $pdf = PDF::loadHTML($view)->setPaper('a4', 'potrait');
+        
+        return $pdf->stream();
+        //   return $leads;
+
     }
 }

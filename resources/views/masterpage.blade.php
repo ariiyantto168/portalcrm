@@ -22,7 +22,8 @@
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/AdminLTE.css">
       
        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-      
+      <!-- jQuery 3 -->
+<script src="{{ asset('adminlte/bower_components/jquery/dist/jquery.min.js') }} "></script>
        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.8/css/skins/_all-skins.css">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -144,8 +145,8 @@
               @endif
 
               {{-- untuk partner --}}
-              @if (Auth::user()->role == "p")
-                  <li class="treeview" id="menu_master">
+              {{-- @if (Auth::user()->role == "p") --}}
+                  {{-- <li class="treeview" id="menu_master">
                     <a href="#">
                       <i class="fa fa-database"></i> <span>Master</span>
                       <span class="pull-right-container">
@@ -155,12 +156,12 @@
                     <ul class="treeview-menu">
                       <!-- <li id="submenu_users"><a href="{{url('users')}}"><i class="fa fa-users"></i> Users</a></li> -->
                     </ul>
-                  </li>
+                  </li> --}}
                   <li id="menu_leads"><a href="{{url('leads/')}}"><i class="fa fa-address-card"></i> <span>Leads</span></a></li>
                   <li id="menu_contacts"><a href="{{url('contacts/')}}"><i class="fa fa-user"></i> <span>Contacts</span></a></li>
                   <li id="menu_accounts"><a href="{{url('accounts/')}}"><i class="fa fa-user-circle"></i> <span>Accounts</span></a></li>
                   <li id="menu_opps"><a href="{{url('opps/')}}"><i class="fa fa-usd" aria-hidden="true"></i> <span>Opportunities</span></a></li>
-              @endif
+              {{-- @endif --}}
 
           </ul>
     </section>
@@ -227,8 +228,7 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery 3 -->
-<script src="{{ asset('adminlte/bower_components/jquery/dist/jquery.min.js') }} "></script>
+
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('adminlte/bower_components/jquery-ui/jquery-ui.min.js')}}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

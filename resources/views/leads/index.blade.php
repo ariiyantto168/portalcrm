@@ -50,6 +50,10 @@
           <td>
             <center>
               <a href="{{url('/leads/update/'.$lead->idleads)}}" ><i class="fa fa-pencil-square-o"></i></a>
+              @if ($lead->status == 'a')
+              <a href="{{url('/leads/add-contacts/'.$lead->idleads)}}"><i class="fa fa-eye"></i></a>
+              @endif
+              <a href="{{url('/leads/print-pdf/'.$lead->idleads)}}" target="__blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
             </center>
           </td>
         </tr>

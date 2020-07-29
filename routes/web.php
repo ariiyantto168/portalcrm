@@ -44,6 +44,10 @@ Route::get('/leads/create-new', 'LeadsController@create_page')->name('create_pag
 Route::post('/leads/create-new', 'LeadsController@create_save')->name('create_page');
 Route::get('/leads/update/{leads}', 'LeadsController@update_page')->name('update');
 Route::post('/leads/update/{leads}', 'LeadsController@update_save')->name('update');
+Route::get('/leads/add-contacts/{leads}', 'LeadsController@add_contacts')->name('add');
+Route::post('/leads/add-contacts-save/{leads}', 'LeadsController@save_add_contacts')->name('add');
+Route::post('/leads/add-contacts-update/{leads}', 'LeadsController@save_update_contacts')->name('add');
+Route::get('/leads/print-pdf/{leads}', 'LeadsController@print_pdf')->name('print_pdf');
 
 // Contacts
 Route::get('/contacts', 'ContactsController@index')->name('index');
